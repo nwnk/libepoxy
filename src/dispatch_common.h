@@ -81,7 +81,8 @@
     static void EPOXY_CALLSPEC                                        \
     name##_global_rewrite_ptr args                               \
     {                                                            \
-        name = (void *)name##_resolver();                        \
+        if (name == name##_global_rewrite_ptr)                   \
+            name = (void *)name##_resolver();                    \
         name passthrough;                                        \
     }
 
@@ -89,7 +90,8 @@
     static ret EPOXY_CALLSPEC                                    \
     name##_global_rewrite_ptr args                               \
     {                                                            \
-        name = (void *)name##_resolver();                        \
+        if (name == name##_global_rewrite_ptr)                   \
+            name = (void *)name##_resolver();                    \
         return name passthrough;                                 \
     }
 
@@ -100,7 +102,8 @@
     {                                                                      \
         struct dispatch_table *dispatch_table = get_dispatch_table();      \
                                                                            \
-        dispatch_table->name = (void *)name##_resolver();                  \
+        if (dispatch_table->name == name##_dispatch_table_rewrite_ptr)     \
+            dispatch_table->name = (void *)name##_resolver();              \
         dispatch_table->name passthrough;                                  \
     }
 
@@ -110,7 +113,8 @@
     {                                                                      \
         struct dispatch_table *dispatch_table = get_dispatch_table();      \
                                                                            \
-        dispatch_table->name = (void *)name##_resolver();                  \
+        if (dispatch_table->name == name##_dispatch_table_rewrite_ptr)     \
+            dispatch_table->name = (void *)name##_resolver();              \
         return dispatch_table->name passthrough;                           \
     }
 
